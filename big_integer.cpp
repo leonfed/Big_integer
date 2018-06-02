@@ -100,6 +100,7 @@ big_integer& big_integer::operator+=(big_integer const& rhs) {
     }
     //now sign == rhs.sign
     bool cf = 0;
+    _data.do_unique();
     for (size_t i = 0; i < max(_data.size(), rhs._data.size()); i++) {
         if (i == _data.size()) {
             _data.push_back(0);
@@ -149,6 +150,7 @@ big_integer& big_integer::operator-=(big_integer const& rhs) {
     }
     //now *this > rhs
     bool cf = 0;
+    _data.do_unique();
     for (size_t i = 0; i < _data.size(); i++) {
         uint res = _data.get(i) - (i < rhs._data.size() ? rhs._data.get(i) : 0) - (uint)cf;
         cf = (res > _data.get(i));
@@ -187,6 +189,7 @@ big_integer& big_integer::operator*=(big_integer const& rhs) {
 }
 
 void big_integer::my_sub(big_integer& b, int shl) { //_data.size == b._data.size + shl && *this >= 0 && b >= 0
+    _data.do_unique();
     int n = _data.size() - 1;
     while ((int)b._data.size() + shl < (int)_data.size()) {
         b._data.push_back(0);
@@ -226,6 +229,7 @@ big_integer& big_integer::operator/=(big_integer const& rhs) {
     if (rhs._data.size() == 1 && rhs._data.get(0) == 0) {
         throw "division by zero";
     }
+    _data.do_unique();
     big_integer abs_a = *this;
     abs_a.sign = 0;
     big_integer abs_b = rhs;
@@ -263,6 +267,7 @@ big_integer& big_integer::operator/=(big_integer const& rhs) {
 }
 
 big_integer& big_integer::operator%=(big_integer const& rhs) {
+    _data.do_unique();
     *this -= rhs * (*this / rhs);
     make_shorten();
     return *this;
@@ -280,6 +285,7 @@ void big_integer::change_form() {
 
 template<typename FunT>
 void big_integer::apply_binary_fun_to_all(big_integer rhs, FunT fun) {
+    _data.do_unique();
     change_form();
     rhs.change_form();
     sign = fun(sign, rhs.sign);
@@ -310,6 +316,7 @@ big_integer& big_integer::operator^=(big_integer const& rhs) {
 }
 
 big_integer& big_integer::operator<<=(int rhs) {
+    _data.do_unique();
     uint cell = rhs / 32;
     uint shift = rhs % 32;
     uint_data res;
@@ -332,6 +339,7 @@ big_integer& big_integer::operator<<=(int rhs) {
 }
 
 big_integer& big_integer::operator>>=(int rhs) {
+    _data.do_unique();
     (*this).change_form();
     uint cell = rhs / 32;
     uint shift = rhs % 32;

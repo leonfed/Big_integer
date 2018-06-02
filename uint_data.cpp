@@ -88,9 +88,9 @@ void uint_data::set(size_t ind, unsigned int value) {
         assert(ind == 0);
         small = value;
     } else {
-        if (!big.unique()) {
-            big = std::shared_ptr<std::vector<unsigned int>>(new std::vector<unsigned int>(*big));
-        }
+//        if (!big.unique()) {
+//            big = std::shared_ptr<std::vector<unsigned int>>(new std::vector<unsigned int>(*big));
+//        }
         (*big)[ind] = value;
     }
 }
@@ -103,9 +103,9 @@ void uint_data::pop_back() {
         small = value;
         type = SMALL;
     } else if (type == BIG) {
-        if (!big.unique()) {
-            big = std::shared_ptr<std::vector<unsigned int>>(new std::vector<unsigned int>(*big));
-        }
+//        if (!big.unique()) {
+//            big = std::shared_ptr<std::vector<unsigned int>>(new std::vector<unsigned int>(*big));
+//        }
         big->pop_back();
     } else if (type == SMALL) {
         type = EMPTY;
@@ -124,9 +124,9 @@ void uint_data::push_back(unsigned int value) {
         int s = small;
         new(&big) std::shared_ptr<std::vector<unsigned int>>(new std::vector<unsigned int>(1, s));
         type = BIG;
-    } else if (!big.unique()) {
+    } /*else if (!big.unique()) {
         big = std::shared_ptr<std::vector<unsigned int>>(new std::vector<unsigned int>(*big));
-    }
+    }*/
     big->push_back(value);
     dataSize++;
 }
